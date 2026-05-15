@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy the pom.xml and source code from the backend directory
 COPY pom.xml .
-COPY ./src
+COPY src ./src
 
 # Build the application and skip tests to speed up deployment
 RUN mvn clean package -DskipTests
