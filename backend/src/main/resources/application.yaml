@@ -4,7 +4,7 @@ spring:
   main:
     allow-circular-references: true
   mongodb:
-    uri: MONGO_URI
+    uri: ${MONGO_URI}
   data:
     mongodb:
       auto-index-creation: true
