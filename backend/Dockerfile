@@ -1,14 +1,20 @@
-# Use an actively maintained Eclipse Temurin JDK base image
-FROM eclipse-temurin:17-jdk-alpine
-
-# Set a working directory inside the container
+# === Stage 1: Build the application ===
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy the Spring Boot JAR file into the container
-COPY target/*.jar app.jar
+# Copy the pom.xml and source code from the backend directory
+COPY backend/pom.xml .
+COPY backend/src ./src
 
-# Expose the port your Spring Boot app runs on
+# Build the application and skip tests to speed up deployment
+RUN mvn clean package -DskipTests
+
+# === Stage 2: Run the application ===
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+# Copy the built JAR from the first stage
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
