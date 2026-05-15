@@ -4,6 +4,7 @@ spring:
   main:
     allow-circular-references: true
   mongodb:
+    database: student_performance_db
     uri: ${MONGO_URI}
   data:
     mongodb:
